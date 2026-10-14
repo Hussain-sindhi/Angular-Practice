@@ -1,0 +1,29 @@
+
+    <div class="login-box">
+    <h2>Login</h2>
+
+<form #loginForm="ngForm" (ngSubmit)="onLogin()">
+    <div class="form-group">
+    <label>Email:</label>
+    <input type="email" name="email" [(ngModel)]="email" #emailModel="ngModel" required>
+    @if (emailModel.invalid && emailModel.touched) {
+        <span class="error">Email is required</span>
+    }
+    </div>
+
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" [(ngModel)]="password" #passwordModel="ngModel" required>
+                @if(passwordModel.invalid && passwordModel.touched) {
+                    <span class="error">Password is required</span>
+                }
+            </div>
+
+            <button type="submit" [disabled]="loginForm.invalid">Login</button>
+            <p class="message">{{ message }}</p> 
+        <!-- <input type="text" placeholder="Enter email address" required>
+        <input type="text" placeholder="Enter password" required>
+        <button (click)="login()">Login</button>
+        <p class="message"  id="message" ></p>
+    </div> -->
+

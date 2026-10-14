@@ -1,0 +1,50 @@
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.login-box{
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+.login-box h2{
+    margin-bottom: 20px;
+}
+
+.login-box input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    margin: auto;
+}
+
+.login-box button{
+    margin-top: 20px;
+    padding: 10;
+    background: rgb(15, 98, 223);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.login-box button :hover{
+    background: rgb(24, 55, 226);
+}
+
+.message{
+    margin-top: auto;
+    color: red;
+    font-size: 14px;
+}
