@@ -1,0 +1,70 @@
+<div class="signin-container">
+    <h2>Sign In</h2>
+
+    <form [formGroup]="regForm" (ngSubmit)="done()">
+
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" class="form-control" formControlName="username" placeholder="Enter username" />
+
+            <span class="error-message" *ngIf="regForm.get('username')?.errors?.['required'] && regForm.get('username')?.touched">
+                Username is required
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('username')?.errors?.['minlength'] && regForm.get('username')?.touched">
+                Username must be at least 3 characters
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('username')?.errors?.['maxlength'] && regForm.get('username')?.touched">
+                Username cannot exceed 10 characters
+            </span>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter email" />
+
+            <span class="error-message" *ngIf="regForm.get('email')?.errors?.['required'] && regForm.get('email')?.touched">
+                Email is required
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('email')?.errors?.['email'] && regForm.get('email')?.touched">
+                Please enter a valid email address
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('email')?.errors?.['pattern'] && regForm.get('email')?.touched">
+                Invalid email format
+            </span>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" formControlName="password" placeholder="Enter password" />
+
+            <span class="error-message" *ngIf="regForm.get('password')?.errors?.['required'] && regForm.get('password')?.touched">
+                Password is required
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('password')?.errors?.['minlength'] && regForm.get('password')?.touched">
+                Password must be at least 3 characters
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('password')?.errors?.['maxlength'] && regForm.get('password')?.touched">
+                Password cannot exceed 10 characters
+            </span>
+
+            <span class="error-message" *ngIf="regForm.get('password')?.errors?.['weakPass'] && regForm.get('password')?.touched">
+                Password is too weak. Avoid common passwords like 'password' or '12345678'
+            </span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary" [disabled]="regForm.invalid">
+            Submit
+        </button>
+
+    </form>
+</div>

@@ -7,7 +7,7 @@ import { RouterTestingHarness, ɵɵRouterLink } from '@angular/router/testing';
 import {Router, RouterLink} from '@angular/router';
 
 @Component({
-  imports: [RouterLink, Navbar],
+  imports: [Navbar],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',

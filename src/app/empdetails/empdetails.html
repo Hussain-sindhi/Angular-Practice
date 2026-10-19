@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>   
+
+
+<form #EmpDetailsForm="ngForm" (ngSubmit)="submitData()">
+    <div class="form-group">
+        <label >Name</label>
+        <input class="input-box" type="text" name="Name" placeholder="Enter Full Name" [(ngModel)]="emp.Name" #nameModel="ngModel" required>
+        <br><br>
+
+        <label >EmpID</label>
+        <input class="input-box" type="number" name="EmpID" placeholder="Enter EmpID" pattern="[0-9]{4}" maxlength="4" [(ngModel)]="emp.EmpID" #empIdModel="ngModel" required  >
+        <br><br>
+
+        <label for="department">Department</label>
+        <select name="department" id="department" [(ngModel)]="emp.Department" #departmentModel="ngModel" required>
+            <option value="" disabled selected>Select department</option>
+            <option value="HR">Human Resource</option>
+            <option value="IT">Information Technlogy</option>
+            <option value="Finance">Finance</option>
+            <option value="Sales">Sales</option>
+        </select>
+        <br><br>
+
+    <label for="designation">Designation:</label>
+<select id="designation" name="designation" [(ngModel)]="emp.Designation" #designationModel="ngModel" required>
+<option value="" disabled selected>Select Designation</option>
+<option value="Intern">Intern</option>
+<option value="Trainee">Trainee</option>
+<option value="Junior Developer">Junior Developer</option>
+<option value="Software Developer">Software Developer</option>
+<option value="Senior Software Developer">Senior Software Developer</option>
+<option value="Team Leader">Team Leader</option>
+<option value="Project Manager">Project Manager</option>
+<option value="HR Manager">HR Manager</option>
+<option value="Data Analyst">Data Analyst</option>
+<option value="Data Scientist">Data Scientist</option>
+<option value="Software Tester">Software Tester</option>
+<option value="System Administrator">System Administrator</option>
+<option value="UI/UX Designer">UI/UX Designer</option>
+<option value="Technical Lead">Technical Lead</option>
+<option value="Engineering Manager">Engineering Manager</option>
+</select>
+        <br><br>
+
+        <label >email</label>
+        <input class="input-box" type="email" name="Email" placeholder="example@gmail.com" [(ngModel)]="emp.Email" #emailModel="ngModel" required >
+        <br><br>
+    </div>
+
+    <button type="button" (click)="EmpDetailsForm.resetForm()">Reset</button>
+    <button type="submit" [disabled]="EmpDetailsForm.invalid">submit</button>
+</form>

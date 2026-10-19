@@ -1,0 +1,35 @@
+<app-login></app-login>
+<nav class="Signup-box">
+<h1>Signup</h1>
+
+<form #SignupForm="ngForm" (ngSubmit) ="onSignup()">
+    <div class="form-group">
+    <label>Fullname:</label>
+    <input class="input-box" type="text" name="Fullname" placeholder="Enter Fullname" [(ngModel)]="Fullname" #FullnameModel="ngModel" required>
+    @if(FullnameModel.invalid && FullnameModel.touched){
+        <span class="error">Fullname is required</span>
+    }
+        <br><br>
+
+    <label>Email:</label>
+    <input class="input-box" type="email" placeholder="Enter email address" [(ngModel)]="email" #emailModel="ngModel" required>
+    @if(emailModel.invalid && emailModel.touched){
+        <span>Email is required</span>
+    }
+        <br><br>
+
+    <label>Password:</label>
+    <input class="input-box" type="password" placeholder="Enter Password" [(ngModel)]="password" #passwordModel="ngModel" required>
+    @if(passwordModel.invalid && passwordModel.touched){
+        <span>password is required</span>
+    }
+    </div>
+    
+    <button type="reset">reset</button>
+    <button type="submit" [disabled]="SignupForm.invalid">Signup</button>
+    <!-- <p class="message">You have entered {{Fullname}}</p> -->
+
+
+</form>
+
+</nav>

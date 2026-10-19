@@ -1,0 +1,137 @@
+/* Body and Container Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sign-in Container */
+.signin-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    margin: 50px auto;
+}
+
+.signin-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Input Field Styling */
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: rgb(15, 98, 223);
+    box-shadow: 0 0 0 3px rgba(15, 98, 223, 0.1);
+}
+
+.form-control::placeholder {
+    color: #999;
+}
+
+/* Angular Reactive Form Validation States */
+.form-control.ng-touched.ng-invalid {
+    border-color: #dc3545;
+}
+
+.form-control.ng-touched.ng-valid {
+    border-color: #28a745;
+}
+
+/* Error Message Styling */
+.error-message {
+    display: block;
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Button Styling */
+.btn-primary {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px 20px;
+    background: rgb(15, 98, 223);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: rgb(12, 78, 178);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 98, 223, 0.3);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Success Message (if needed) */
+.success-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .signin-container {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+
+    .signin-container h2 {
+        font-size: 24px;
+    }
+
+    .form-control {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}

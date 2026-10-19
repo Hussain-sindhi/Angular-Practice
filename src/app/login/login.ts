@@ -16,11 +16,16 @@ export class Login {
   message: string = '';
 
   constructor(private router: Router) { }
+
   onLogin() {
-  if(this.email === '' || this.password === '') {
-    this.message = 'Please enter both email and password';
-  }else {
-    this.router.navigate(['/home']);
-  } 
-}
+    if(this.email === '' || this.password === '') {
+      this.message = 'Please enter both email and password';
+    } else {
+      this.router.navigate(['/home']);
+    }
+  }
+
+  goToSignup() {
+    this.router.navigate(['/signup']);
+  }
 } 

@@ -1,50 +1,183 @@
-body{
+body {
     font-family: 'Roboto', sans-serif;
-    background-color: white;
+    background-color: #f5f5f5;
     display: flex;
     justify-content: center;
-    text-align: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
-.login-box{
+.login-box {
     background-color: #fff;
-    padding: 30px;
+    padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
     text-align: center;
 }
 
-.login-box h2{
+.login-box h2 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Form Group Styling */
+.form-group {
     margin-bottom: 20px;
+    text-align: left;
 }
 
-.login-box input{
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Input Field Styling */
+.login-box input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
     outline: none;
-    margin: auto;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
-.login-box button{
-    margin-top: 20px;
-    padding: 10;
+.login-box input:focus {
+    border-color: rgb(15, 98, 223);
+    box-shadow: 0 0 0 3px rgba(15, 98, 223, 0.1);
+}
+
+/* Validation States */
+.login-box input.ng-touched.ng-invalid {
+    border-color: #dc3545;
+}
+
+.login-box input.ng-touched.ng-valid {
+    border-color: #28a745;
+}
+
+/* Error Message Styling */
+.error {
+    display: block;
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Button Styling */
+.login-box button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px 20px;
     background: rgb(15, 98, 223);
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.login-box button:hover:not(:disabled) {
+    background: rgb(12, 78, 178);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 98, 223, 0.3);
+}
+
+.login-box button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.login-box button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* General Message Styling */
+.message {
+    margin-top: 15px;
+    color: #dc3545;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Signup Section Styling */
+.signup-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.signup-text {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.signup-link {
+    background: transparent;
+    color: rgb(15, 98, 223);
+    border: 2px solid rgb(15, 98, 223);
+    padding: 10px 25px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
 }
 
-.login-box button :hover{
-    background: rgb(24, 55, 226);
+.signup-link:hover {
+    background: rgb(15, 98, 223);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 98, 223, 0.3);
 }
 
-.message{
-    margin-top: auto;
-    color: red;
+.signup-link:active {
+    transform: translateY(0);
+}
+
+/* Alternative inline style - uncomment if you prefer inline link */
+/*
+.signup-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.signup-text {
+    color: #666;
     font-size: 14px;
+    display: inline;
 }
+
+.signup-link {
+    background: transparent;
+    color: rgb(15, 98, 223);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+    margin-left: 5px;
+}
+
+.signup-link:hover {
+    color: rgb(12, 78, 178);
+}
+*/
