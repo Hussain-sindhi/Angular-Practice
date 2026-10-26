@@ -1,52 +1,172 @@
-<app-navbar></app-navbar>   
+<app-navbar></app-navbar>
 
+<div class="page-container">
+  <!-- Left Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">Navigation</div>
+    <ul class="sidebar-nav">
+      <li>
+        <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      <li>
+        <a routerLink="/my-self" routerLinkActive="active">Myself</a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active">About</a>
+      </li>
+      <li>
+        <a routerLink="/empdetails" routerLinkActive="active">Emp Details</a>
+      </li>
+    </ul>
+  </aside>
 
-<form #EmpDetailsForm="ngForm" (ngSubmit)="submitData()">
-    <div class="form-group">
-        <label >Name</label>
-        <input class="input-box" type="text" name="Name" placeholder="Enter Full Name" [(ngModel)]="emp.Name" #nameModel="ngModel" required>
-        <br><br>
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="content-header">
+      <h1 class="page-title">Employee Management</h1>
+      <p class="page-subtitle">Node.js REST API with PostgreSQL & JWT Interceptor</p>
+    </header>
 
-        <label >EmpID</label>
-        <input class="input-box" type="number" name="EmpID" placeholder="Enter EmpID" pattern="[0-9]{4}" maxlength="4" [(ngModel)]="emp.EmpID" #empIdModel="ngModel" required  >
-        <br><br>
+    @if (successMessage) {
+      <div class="alert alert-success">{{ successMessage }}</div>
+    }
 
-        <label for="department">Department</label>
-        <select name="department" id="department" [(ngModel)]="emp.Department" #departmentModel="ngModel" required>
-            <option value="" disabled selected>Select department</option>
-            <option value="HR">Human Resource</option>
-            <option value="IT">Information Technlogy</option>
-            <option value="Finance">Finance</option>
-            <option value="Sales">Sales</option>
-        </select>
-        <br><br>
+    <!-- Add New Employee (Reactive Form) Card -->
+    <section class="card form-card">
+      <h2 class="card-title">Add New Employee (Reactive Form)</h2>
 
-    <label for="designation">Designation:</label>
-<select id="designation" name="designation" [(ngModel)]="emp.Designation" #designationModel="ngModel" required>
-<option value="" disabled selected>Select Designation</option>
-<option value="Intern">Intern</option>
-<option value="Trainee">Trainee</option>
-<option value="Junior Developer">Junior Developer</option>
-<option value="Software Developer">Software Developer</option>
-<option value="Senior Software Developer">Senior Software Developer</option>
-<option value="Team Leader">Team Leader</option>
-<option value="Project Manager">Project Manager</option>
-<option value="HR Manager">HR Manager</option>
-<option value="Data Analyst">Data Analyst</option>
-<option value="Data Scientist">Data Scientist</option>
-<option value="Software Tester">Software Tester</option>
-<option value="System Administrator">System Administrator</option>
-<option value="UI/UX Designer">UI/UX Designer</option>
-<option value="Technical Lead">Technical Lead</option>
-<option value="Engineering Manager">Engineering Manager</option>
-</select>
-        <br><br>
+      <form [formGroup]="empForm" (ngSubmit)="addEmployee()" class="emp-form">
+        <div class="form-row top-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              id="firstName"
+              type="text"
+              class="form-input"
+              formControlName="firstName"
+              placeholder="Enter first name"
+            />
+          </div>
 
-        <label >email</label>
-        <input class="input-box" type="email" name="Email" placeholder="example@gmail.com" [(ngModel)]="emp.Email" #emailModel="ngModel" required >
-        <br><br>
-    </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              id="lastName"
+              type="text"
+              class="form-input"
+              formControlName="lastName"
+              placeholder="Enter last name"
+            />
+          </div>
 
-    <button type="button" (click)="EmpDetailsForm.resetForm()">Reset</button>
-    <button type="submit" [disabled]="EmpDetailsForm.invalid">submit</button>
-</form>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              class="form-input"
+              formControlName="email"
+              placeholder="Enter email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="department">Department</label>
+            <input
+              id="department"
+              type="text"
+              class="form-input"
+              formControlName="department"
+              placeholder="e.g. IT, HR, Sales"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="designation">Designation</label>
+            <input
+              id="designation"
+              type="text"
+              class="form-input"
+              formControlName="designation"
+              placeholder="e.g. Developer"
+            />
+          </div>
+        </div>
+
+        <div class="form-row bottom-row">
+          <div class="form-group salary-group">
+            <label for="salary">Salary (₹)</label>
+            <input
+              id="salary"
+              type="number"
+              class="form-input"
+              formControlName="salary"
+              placeholder="50000"
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn-add-employee"
+            [disabled]="empForm.invalid"
+          >
+            + Add Employee
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Employee Directory Card -->
+    <section class="card directory-card">
+      <div class="directory-header">
+        <h2 class="card-title">Employee Directory</h2>
+        <span class="total-count">Total: {{ employees.length }}</span>
+      </div>
+
+      <div class="table-container">
+        <table class="employee-table">
+          <thead>
+            <tr>
+              <th class="th-id">ID</th>
+              <th class="th-name">Full Name</th>
+              <th class="th-email">Email</th>
+              <th class="th-dept">Department</th>
+              <th class="th-desig">Designation</th>
+              <th class="th-salary">Salary</th>
+              <th class="th-action">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (emp of employees; track emp.id) {
+              <tr>
+                <td class="td-id">#{{ emp.id }}</td>
+                <td class="td-name">{{ emp.fullName }}</td>
+                <td class="td-email">{{ emp.email }}</td>
+                <td class="td-dept">
+                  <span class="badge-dept">{{ emp.department }}</span>
+                </td>
+                <td class="td-desig">{{ emp.designation }}</td>
+                <td class="td-salary">₹{{ emp.salary | number:'1.2-2' }}</td>
+                <td class="td-action">
+                  <button
+                    type="button"
+                    class="btn-delete"
+                    (click)="deleteEmployee(emp.id)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="td-empty">No employees found in directory.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>

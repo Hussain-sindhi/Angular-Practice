@@ -1,7 +1,15 @@
-<nav>
-<a routerLink="/home">Home</a> 
-<a routerLink="/about">About</a>
-<a routerLink="/my-self">MySelf</a>
-<a routerLink="/empdetails">EmpDetails</a>
-<button (click)="logout()">logout</button>
-</nav>
+<header class="top-navbar">
+  <div class="nav-brand">
+    <span class="brand-text">Angular App</span>
+  </div>
+  
+  <div class="nav-right">
+    <nav class="nav-links">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="/my-self" routerLinkActive="active">Myself</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a routerLink="/empdetails" routerLinkActive="active">Emp Details</a>
+    </nav>
+    <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</header>

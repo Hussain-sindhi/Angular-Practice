@@ -1,2 +1,7 @@
 <app-navbar></app-navbar>
 <h2>Welcome to Home Page</h2>
+
+
+<app-child  [msg]="pmsg" (datasent)="pmsg =$event"> </app-child>
+
+    <p>{{ pmsg }}</p>

@@ -36,7 +36,7 @@ export class SignIn {
       Validators.minLength(3),
       Validators.maxLength(10),
       this.passValidatorNot.bind(this)
-    ]),
+    ]), 
   });
 
   done() {

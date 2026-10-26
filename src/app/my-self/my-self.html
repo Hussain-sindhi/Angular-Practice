@@ -1,8 +1,17 @@
-<h2>Welcome to My Self Page!</h2>
+<app-navbar></app-navbar>
 
-<p>name : {{ name }}</p>  <!-- interpolation -->
-<p>age : {{ age }}</p>
-<p>course : {{ course }}</p>
-<p>college : {{ college }}</p>
+<div class="myself-container">
+  <h2>Welcome to My Self Page!</h2>
 
-<a routerLink="/Home">Home</a>
+  <div class="card">
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Age:</strong> {{ age }}</p>
+    <p><strong>Course:</strong> {{ course }}</p>
+    <p><strong>College:</strong> {{ college }}</p>
+    
+    <div class="actions">
+      <a routerLink="/home" class="btn btn-secondary">Home</a>
+      <button type="button" class="btn btn-primary" (click)="RouteParams()">Emp Details (101)</button>
+    </div>
+  </div>
+</div>
