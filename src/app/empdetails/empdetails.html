@@ -31,11 +31,17 @@
       <div class="alert alert-success">{{ successMessage }}</div>
     }
 
-    <!-- Add New Employee (Reactive Form) Card -->
+    <!-- Add / Edit Employee (Reactive Form) Card -->
     <section class="card form-card">
-      <h2 class="card-title">Add New Employee (Reactive Form)</h2>
+      <h2 class="card-title">
+        @if (isEditing) {
+          Edit Employee (ID: #{{ editingId }})
+        } @else {
+          Add New Employee (Reactive Form)
+        }
+      </h2>
 
-      <form [formGroup]="empForm" (ngSubmit)="addEmployee()" class="emp-form">
+      <form [formGroup]="empForm" (ngSubmit)="onSubmit()" class="emp-form">
         <div class="form-row top-row">
           <div class="form-group">
             <label for="firstName">First Name</label>
@@ -107,13 +113,30 @@
         </div>
 
         <div class="form-actions">
-          <button
-            type="submit"
-            class="btn-add-employee"
-            [disabled]="empForm.invalid"
-          >
-            + Add Employee
-          </button>
+          @if (isEditing) {
+            <button
+              type="button"
+              class="btn-cancel"
+              (click)="cancelEdit()"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn-update-employee"
+              [disabled]="empForm.invalid"
+            >
+              Update Employee
+            </button>
+          } @else {
+            <button
+              type="submit"
+              class="btn-add-employee"
+              [disabled]="empForm.invalid"
+            >
+              + Add Employee
+            </button>
+          }
         </div>
       </form>
     </section>
@@ -140,7 +163,7 @@
           </thead>
           <tbody>
             @for (emp of employees; track emp.id) {
-              <tr>
+              <tr [class.editing-row]="isEditing && editingId === emp.id">
                 <td class="td-id">#{{ emp.id }}</td>
                 <td class="td-name">{{ emp.fullName }}</td>
                 <td class="td-email">{{ emp.email }}</td>
@@ -150,13 +173,22 @@
                 <td class="td-desig">{{ emp.designation }}</td>
                 <td class="td-salary">₹{{ emp.salary | number:'1.2-2' }}</td>
                 <td class="td-action">
-                  <button
-                    type="button"
-                    class="btn-delete"
-                    (click)="deleteEmployee(emp.id)"
-                  >
-                    Delete
-                  </button>
+                  <div class="action-buttons">
+                    <button
+                      type="button"
+                      class="btn-edit"
+                      (click)="startEdit(emp)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      (click)="deleteEmployee(emp.id)"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             } @empty {

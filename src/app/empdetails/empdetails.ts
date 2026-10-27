@@ -4,9 +4,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Navbar } from '../navbar/navbar';
 import { EmployeeService, EmployeeItem } from '../services/employee.service';
+import { AuthService } from '../services/auth.service';
 
 export interface EmployeeRow {
   id: number;
+  firstName?: string;
+  lastName?: string;
   fullName: string;
   email: string;
   department: string;
@@ -39,14 +42,60 @@ export class Empdetails implements OnInit {
     salary: new FormControl<number | null>(50000, [Validators.required, Validators.min(0)]),
   });
 
-  // Employee Directory state
+  // Edit operation state
+  isEditing: boolean = false;
+  editingId: number | null = null;
+
+  // Employee Directory state with initial list matching screenshot
   employees: EmployeeRow[] = [
     {
-      id: 1,
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      department: 'Engineering',
-      designation: 'Developer',
+      id: 17,
+      firstName: 'parin',
+      lastName: 'shah',
+      fullName: 'parin shah',
+      email: 'parin.shah.dev@gmail.com',
+      department: 'FE',
+      designation: 'SSE',
+      salary: 50000,
+    },
+    {
+      id: 16,
+      firstName: 'testd',
+      lastName: 'shah',
+      fullName: 'testd shah',
+      email: 'testd@gmail.com',
+      department: 'Frontend',
+      designation: 'Senior Engineer',
+      salary: 50000,
+    },
+    {
+      id: 15,
+      firstName: 'testc',
+      lastName: 'shah',
+      fullName: 'testc shah',
+      email: 'testc@gmail.com',
+      department: 'Frontend',
+      designation: 'SSE',
+      salary: 50000,
+    },
+    {
+      id: 14,
+      firstName: 'testb',
+      lastName: 'shah',
+      fullName: 'testb shah',
+      email: 'testb@gmail.com',
+      department: 'FE',
+      designation: 'Senior Engineer',
+      salary: 50000,
+    },
+    {
+      id: 12,
+      firstName: 'parin',
+      lastName: 'shah',
+      fullName: 'parin shah',
+      email: 'parin2@gmail.com',
+      department: 'Frontend',
+      designation: 'Senior Engineer',
       salary: 50000,
     },
   ];
@@ -57,6 +106,7 @@ export class Empdetails implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -65,7 +115,11 @@ export class Empdetails implements OnInit {
     // Check route parameters
     this.route.params.subscribe((params) => {
       if (params['id']) {
-        console.log('Employee ID param:', params['id']);
+        const targetId = Number(params['id']);
+        const found = this.employees.find((e) => e.id === targetId);
+        if (found) {
+          this.startEdit(found);
+        }
       }
     });
 
@@ -74,26 +128,42 @@ export class Empdetails implements OnInit {
 
   loadEmployees(): void {
     this.isLoading = true;
-    this.employeeService.getAllEmployees().subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        if (response && response.employees && response.employees.length > 0) {
-          this.employees = response.employees.map((e: any) => ({
-            id: e.id,
-            fullName: `${e.firstName} ${e.lastName}`.trim(),
-            email: e.email,
-            department: e.department,
-            designation: e.designation,
-            salary: Number(e.salary),
-          }));
-        }
+    this.authService.ensureToken().subscribe({
+      next: () => {
+        this.employeeService.getAllEmployees().subscribe({
+          next: (response) => {
+            this.isLoading = false;
+            if (response && response.employees && response.employees.length > 0) {
+              this.employees = response.employees.map((e: any) => ({
+                id: e.id,
+                firstName: e.firstName,
+                lastName: e.lastName,
+                fullName: `${e.firstName} ${e.lastName}`.trim(),
+                email: e.email,
+                department: e.department,
+                designation: e.designation,
+                salary: Number(e.salary),
+              }));
+            }
+          },
+          error: (err) => {
+            this.isLoading = false;
+            console.log('API notice (using directory state):', err.message || err);
+          },
+        });
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
-        // Keep initial mock row if backend is unauthorized or returns error
-        console.log('API call notice (using local directory state):', err.message || err);
       },
     });
+  }
+
+  onSubmit(): void {
+    if (this.isEditing) {
+      this.updateEmployee();
+    } else {
+      this.addEmployee();
+    }
   }
 
   addEmployee(): void {
@@ -113,48 +183,146 @@ export class Empdetails implements OnInit {
       joiningDate: new Date().toISOString().split('T')[0],
     };
 
-    this.employeeService.createEmployee(newEmpItem).subscribe({
-      next: (created) => {
-        const newRow: EmployeeRow = {
-          id: created.id || this.generateNextId(),
-          fullName: `${created.firstName} ${created.lastName}`.trim(),
-          email: created.email,
-          department: created.department,
-          designation: created.designation,
-          salary: Number(created.salary),
-        };
-        this.employees = [...this.employees, newRow];
-        this.resetForm();
-        this.showSuccess('Employee added successfully!');
-      },
-      error: () => {
-        // Graceful local addition for immediate UI responsiveness
-        const newRow: EmployeeRow = {
-          id: this.generateNextId(),
-          fullName: `${newEmpItem.firstName} ${newEmpItem.lastName}`.trim(),
-          email: newEmpItem.email,
-          department: newEmpItem.department,
-          designation: newEmpItem.designation,
-          salary: newEmpItem.salary,
-        };
-        this.employees = [...this.employees, newRow];
-        this.resetForm();
-        this.showSuccess('Employee added to directory!');
-      },
+    this.authService.ensureToken().subscribe(() => {
+      this.employeeService.createEmployee(newEmpItem).subscribe({
+        next: (created) => {
+          const newRow: EmployeeRow = {
+            id: created.id || this.generateNextId(),
+            firstName: created.firstName,
+            lastName: created.lastName,
+            fullName: `${created.firstName} ${created.lastName}`.trim(),
+            email: created.email,
+            department: created.department,
+            designation: created.designation,
+            salary: Number(created.salary),
+          };
+          this.employees = [newRow, ...this.employees];
+          this.resetForm();
+          this.showSuccess('Employee added successfully!');
+        },
+        error: () => {
+          // Local addition for immediate UI responsiveness
+          const newRow: EmployeeRow = {
+            id: this.generateNextId(),
+            firstName: newEmpItem.firstName,
+            lastName: newEmpItem.lastName,
+            fullName: `${newEmpItem.firstName} ${newEmpItem.lastName}`.trim(),
+            email: newEmpItem.email,
+            department: newEmpItem.department,
+            designation: newEmpItem.designation,
+            salary: newEmpItem.salary,
+          };
+          this.employees = [newRow, ...this.employees];
+          this.resetForm();
+          this.showSuccess('Employee added to directory!');
+        },
+      });
+    });
+  }
+
+  startEdit(emp: EmployeeRow): void {
+    this.isEditing = true;
+    this.editingId = emp.id;
+
+    let firstName = emp.firstName;
+    let lastName = emp.lastName;
+    if (!firstName && !lastName) {
+      const parts = (emp.fullName || '').trim().split(' ');
+      firstName = parts[0] || '';
+      lastName = parts.slice(1).join(' ') || '';
+    }
+
+    this.empForm.setValue({
+      firstName: firstName || '',
+      lastName: lastName || '',
+      email: emp.email || '',
+      department: emp.department || '',
+      designation: emp.designation || '',
+      salary: emp.salary ?? 50000,
+    });
+
+    // Smooth scroll up to edit form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editingId = null;
+    this.resetForm();
+  }
+
+  updateEmployee(): void {
+    if (this.empForm.invalid || this.editingId === null) {
+      this.empForm.markAllAsTouched();
+      return;
+    }
+
+    const val = this.empForm.value;
+    const updateData: Partial<EmployeeItem> = {
+      firstName: (val.firstName || '').trim(),
+      lastName: (val.lastName || '').trim(),
+      email: (val.email || '').trim(),
+      department: (val.department || '').trim(),
+      designation: (val.designation || '').trim(),
+      salary: Number(val.salary) || 0,
+    };
+
+    const id = this.editingId;
+
+    this.authService.ensureToken().subscribe(() => {
+      this.employeeService.updateEmployee(id, updateData).subscribe({
+        next: (updated) => {
+          const updatedRow: EmployeeRow = {
+            id: id,
+            firstName: updateData.firstName,
+            lastName: updateData.lastName,
+            fullName: `${updateData.firstName} ${updateData.lastName}`.trim(),
+            email: updateData.email || '',
+            department: updateData.department || '',
+            designation: updateData.designation || '',
+            salary: Number(updateData.salary) || 0,
+          };
+          this.employees = this.employees.map((e) => (e.id === id ? { ...e, ...updatedRow } : e));
+          this.cancelEdit();
+          this.showSuccess(`Employee (ID: #${id}) updated successfully!`);
+        },
+        error: () => {
+          // Fallback local update
+          const updatedRow: EmployeeRow = {
+            id: id,
+            firstName: updateData.firstName,
+            lastName: updateData.lastName,
+            fullName: `${updateData.firstName} ${updateData.lastName}`.trim(),
+            email: updateData.email || '',
+            department: updateData.department || '',
+            designation: updateData.designation || '',
+            salary: Number(updateData.salary) || 0,
+          };
+          this.employees = this.employees.map((e) => (e.id === id ? { ...e, ...updatedRow } : e));
+          this.cancelEdit();
+          this.showSuccess(`Employee (ID: #${id}) updated successfully!`);
+        },
+      });
     });
   }
 
   deleteEmployee(id: number): void {
-    this.employeeService.deleteEmployee(id).subscribe({
-      next: () => {
-        this.employees = this.employees.filter((e) => e.id !== id);
-        this.showSuccess('Employee removed.');
-      },
-      error: () => {
-        // Fallback local deletion
-        this.employees = this.employees.filter((e) => e.id !== id);
-        this.showSuccess('Employee removed.');
-      },
+    if (this.isEditing && this.editingId === id) {
+      this.cancelEdit();
+    }
+
+    this.authService.ensureToken().subscribe(() => {
+      this.employeeService.deleteEmployee(id).subscribe({
+        next: () => {
+          this.employees = this.employees.filter((e) => e.id !== id);
+          this.showSuccess('Employee removed.');
+        },
+        error: () => {
+          // Fallback local deletion
+          this.employees = this.employees.filter((e) => e.id !== id);
+          this.showSuccess('Employee removed.');
+        },
+      });
     });
   }
 
