@@ -17,8 +17,9 @@ export const routes: Routes = [
   { path: 'about', component: About },
   { path: 'empdetails', component: Empdetails },
   { path: 'empdetails/:id', component: Empdetails },
-  { path: 'emp-details', component: Empdetails },
-  { path: 'emp-details/:id', component: Empdetails },
+  // Legacy URLs kept as redirects so existing links keep working
+  { path: 'emp-details', redirectTo: 'empdetails', pathMatch: 'full' },
+  { path: 'emp-details/:id', redirectTo: 'empdetails/:id' },
   { path: 'navbar', component: Navbar },
   { path: 'sign-in', component: SignIn },
   { path: '**', redirectTo: 'empdetails' },

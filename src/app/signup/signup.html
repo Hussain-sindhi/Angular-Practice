@@ -12,14 +12,14 @@
         <br><br>
 
     <label>Email:</label>
-    <input class="input-box" type="email" placeholder="Enter email address" [(ngModel)]="email" #emailModel="ngModel" required>
+    <input class="input-box" type="email" placeholder="Enter email address" name="email" [(ngModel)]="email" #emailModel="ngModel" required>
     @if(emailModel.invalid && emailModel.touched){
         <span>Email is required</span>
     }
         <br><br>
 
     <label>Password:</label>
-    <input class="input-box" type="password" placeholder="Enter Password" [(ngModel)]="password" #passwordModel="ngModel" required>
+    <input class="input-box" type="password" placeholder="Enter Password" name="password" [(ngModel)]="password" #passwordModel="ngModel" required>
     @if(passwordModel.invalid && passwordModel.touched){
         <span>password is required</span>
     }

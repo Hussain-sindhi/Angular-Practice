@@ -3,6 +3,7 @@
 [![Angular](https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white)](https://angular.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![RxJS](https://img.shields.io/badge/RxJS-7.8-B7178C?logo=reactivex&logoColor=white)](https://rxjs.dev)
+[![CI](https://github.com/Hussain-sindhi/Angular-Practice/actions/workflows/ci.yml/badge.svg)](https://github.com/Hussain-sindhi/Angular-Practice/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev)
 
 A single-page Angular application for managing employee records. It covers user sign-up and login, token-based API access through an HTTP interceptor, and a screen to create, view, edit and delete employees against a REST API.
@@ -18,7 +19,7 @@ A single-page Angular application for managing employee records. It covers user 
 - **Routing**: client-side routes for login, signup, home, about, profile and employee details (including an `:id` route parameter).
 - **Forms**: template-driven forms (login, signup) and a reactive form (sign-in) with built-in and custom validators, for example a weak-password check.
 - **Component communication**: a parent/child example using `@Input`, `@Output` and lifecycle hooks.
-- **Tests**: spec files for components, run with `ng test`.
+- **Tests**: unit-test specs for each component, run with `npm test` and in CI on every push.
 
 ## Tech stack
 
@@ -97,12 +98,12 @@ src/app/
 
 ## Roadmap
 
-- [ ] Move the API base URL into Angular environment configuration
-- [ ] Remove the development default-login fallback from `AuthService` and handle expired sessions properly
+- [x] Move the API base URL into one shared config file (`src/app/core/api.config.ts`)
+- [x] Remove the hardcoded default login from `AuthService`; users now log in through the login page
+- [x] Merge the duplicate `empdetails` / `emp-details` routes (old URLs redirect)
+- [x] Add a GitHub Actions workflow that runs the build and tests
 - [ ] Add route guards for pages that require login
-- [ ] Merge the duplicate `empdetails` / `emp-details` routes
 - [ ] Add screenshots and a short demo GIF
-- [ ] Add a GitHub Actions workflow that runs the build and tests
 
 ## Author
 

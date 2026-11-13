@@ -17,6 +17,6 @@ export class MySelf {
   constructor(private router: Router) {}
 
   RouteParams() {
-    this.router.navigate(['/emp-details', 101]);
+    this.router.navigate(['/empdetails', 101]);
   }
 }

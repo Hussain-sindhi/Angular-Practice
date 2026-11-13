@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { API_BASE_URL } from '../core/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrl = `${API_BASE_URL}/auth`;
 
   constructor(private http: HttpClient) {}
 
@@ -36,25 +36,11 @@ export class AuthService {
   }
 
   /**
-   * Ensures a valid JWT token exists in localStorage.
-   * If missing, automatically authenticates with default credentials so that
-   * API requests to protected endpoints succeed seamlessly.
+   * Returns the stored JWT token, or an empty string when the user has not
+   * logged in yet. Users obtain a token through the login page; no default
+   * credentials are used.
    */
   ensureToken(): Observable<string> {
-    const existing = this.getToken();
-    if (existing) {
-      return of(existing);
-    }
-
-    return this.login({ email: 'admin@example.com', password: 'password123' }).pipe(
-      map((res: any) => {
-        if (res && res.accessToken) {
-          this.saveToken(res.accessToken);
-          return res.accessToken;
-        }
-        return '';
-      }),
-      catchError(() => of(''))
-    );
+    return of(this.getToken() ?? '');
   }
 }
